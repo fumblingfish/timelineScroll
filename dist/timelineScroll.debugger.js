@@ -52,7 +52,6 @@ timelineScroll.debugger = (function () {
             })
             $scene.append($pinClone2)
             $scene.append($pinClone1)
-
          })
       },
 
