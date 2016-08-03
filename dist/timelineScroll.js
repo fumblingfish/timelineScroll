@@ -7,8 +7,8 @@ var timelineScroll = (function ($, TweenMax) {
       playheadRatio: 0.5
    };
 
-   var ElementStory = function ElementStory(elm, options, callback) {
-      this.options = $.extend(true, defaultOptions, options);
+   var Storyline = function ElementStory(elm, options, callback) {
+      this.options = $.extend(true, defaultOptions, options)
       this.$targetElement = $(elm)
       this.sceneCount = 0
       this.scenes = []
@@ -57,40 +57,51 @@ var timelineScroll = (function ($, TweenMax) {
       }
    }
 
-   ElementStory.prototype.storyHeight = function () {
+   Storyline.prototype.storyHeight = function () {
       return this.scenes.reduce(function (acc, scene) {
          return acc + scene.$sceneElement.outerHeight()
       }, 0)
    }
 
-   ElementStory.prototype.storyTop = function () {
+   Storyline.prototype.storyTop = function () {
       var sceneOffsetTops = this.scenes.map(function (scene) {
          return scene.$sceneElement.offset().top
       })
       return Math.min.apply(null, sceneOffsetTops)
    }
 
-
-   ElementStory.prototype.updateAfterResize = function () {
+   Storyline.prototype.updateResize = function () {
       this.updateTimeline()
    }
 
-   ElementStory.prototype.updateAfterScroll = function () {
+   Storyline.prototype.updateScroll = function () {
       this.update()
    }
 
-   ElementStory.prototype.addScene = function (elm) {
+   Storyline.prototype.addScene = function (elm) {
+      if(typeof this.storylineBegin === 'undefined') throw new Error('storyline should call start before adding scenes')
       var scene = new Scene(elm, this.sceneCount)
       this.scenes.push(scene)
       this.sceneCount++
       return scene
    }
 
-   ElementStory.prototype.addStartProps = function (props) {
-      this.startProps = props
+   Storyline.prototype.start = function (props) {
+      this.startProps = props || {}
+      this.storylineBegin = true
    }
 
-   ElementStory.prototype._cuepointValidation = function () {
+   Storyline.prototype.end = function () {
+      if (!this._cuepointValidation()) {
+         throw new Error('cuepoints should be monotonically increasing')
+      }
+      if (!this._lastTweenValidation()) {
+         throw new Error('last tween must be less than or equal to 1')
+      }
+      this.updateTimeline()
+   }
+
+   Storyline.prototype._cuepointValidation = function () {
       var sceneCuepoints = this.scenes.reduce(function (acc, scene) {
          var tp = scene.timePosition
          var tweenCuepoints = scene.tweens.map(function (tween) {
@@ -107,20 +118,10 @@ var timelineScroll = (function ($, TweenMax) {
       return timelineIncrements !== false
    }
 
-   ElementStory.prototype._lastTweenValidation = function () {
+   Storyline.prototype._lastTweenValidation = function () {
       var lastScene = this.scenes[this.scenes.length - 1]
       var lastTween = lastScene.tweens[lastScene.tweens.length - 1]
       return lastTween.to <= 1.0
-   }
-
-   ElementStory.prototype.initialize = function () {
-      if (!this._cuepointValidation()) {
-         throw new Error('cuepoints should be monotonically increasing')
-      }
-      if (!this._lastTweenValidation()) {
-         throw new Error('last tween must be less than or equal to 1')
-      }
-      this.updateTimeline()
    }
 
    var Tween = function (from, to, props) {
@@ -129,7 +130,7 @@ var timelineScroll = (function ($, TweenMax) {
       this.tweenPosition = from
       this.tweenDuration = to - from
       this.props = props
-      this._baseProps = $.extend(true, {}, props);
+      this._baseProps = $.extend(true, {}, props)
    }
 
    var Scene = function Scene(elm, timePos) {
@@ -148,12 +149,8 @@ var timelineScroll = (function ($, TweenMax) {
    }
 
    return {
-      initializer: function (elm, options, callback) {
-         return function createStory(props) {
-            var story = new ElementStory(elm, options, callback)
-            story.addStartProps(props)
-            return story
-         }
+      createStoryline: function (elm, options, callback) {
+         return new Storyline(elm, options, callback)
       }
    }
 
