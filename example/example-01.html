@@ -18,34 +18,33 @@
             var $sceneD = $('.scene-d')
             var $target = $('.targetElement')
 
-            var init = timelineScroll.initializer($target, {playheadRatio:0.5})
+            var storyline = timelineScroll.createStoryline($target, {playheadRatio:0.5})
 
-            var $targetStory = init({left: '0%'})
+            storyline.start({left: '0%'})
 
-            $targetStory.addScene($sceneA, 'sceneA')
+            storyline.addScene($sceneA)
                     .addTween(0.3, 0.5, {left: '10%'})
                     .addTween(0.8, 1.0, {left: '20%'})
 
-            $targetStory.addScene($sceneB, 'sceneB')
+            storyline.addScene($sceneB)
                     .addTween(0.2, 0.4, {left: '40%'})
 
-            $targetStory.addScene($sceneC, 'sceneC')
+            storyline.addScene($sceneC)
                     .addTween(0.2, 0.4, {left: '50%'})
                     .addTween(0.6, 0.8, {left: '60%'})
 
-            $targetStory.addScene($sceneD, 'sceneD')
+            storyline.addScene($sceneD)
                     .addTween(0.0, 0.2, {left: '20%'})
                     .addTween(0.6, 0.8, {left: '0%'})
 
-
-            $targetStory.initialize()
+            storyline.end()
 
             var resizeHandler = function () {
-                $targetStory.updateAfterResize()
+                storyline.updateResize()
             }
 
             var scrollHandler = function () {
-                $targetStory.updateAfterScroll()
+                storyline.updateScroll()
             }
 
             window.addEventListener('scroll', scrollHandler)
@@ -55,7 +54,7 @@
                 return {y: i * 0.1}
             })
             timelineScroll.debugger.injectPins($scenes, pins)
-            timelineScroll.debugger.debugCuePoints($targetStory)
+            timelineScroll.debugger.debugCuePoints(storyline)
 
 
         });
