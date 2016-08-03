@@ -1,0 +1,33 @@
+{
+  "name": "timelinescroll",
+  "version": "1.0.0",
+  "description": "A scroll animation helper that uses gsap",
+  "main": "./dist/timelineScroll.js",
+  "directories": {
+    "example": "example"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.1",
+    "gulp-uglify": "^1.5.3"
+  },
+  "scripts": {
+    "build": "gulp build",
+    "dev": "gulp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/holstandersson/timelineScroll.git"
+  },
+  "author": "Rasmus Holst Andersson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/holstandersson/timelineScroll/issues"
+  },
+  "homepage": "https://github.com/holstandersson/timelineScroll#readme"
+}

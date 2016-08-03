@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <title>example-01</title>
+    <meta name="viewport" content="width=640, target-densitydpi=device-dpi, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/example-01.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+    <script src="../dist/timelineScroll.js"></script>
+    <script src="../dist/timelineScroll.debugger.js"></script>
+    <script>
+        $(function () {
+
+            var $scenes = $('.scene')
+            var $sceneA = $('.scene-a')
+            var $sceneB = $('.scene-b')
+            var $sceneC = $('.scene-c')
+            var $sceneD = $('.scene-d')
+            var $target = $('.targetElement')
+
+            var init = timelineScroll.initializer($target, {playheadRatio:0.5})
+
+            var $targetStory = init({left: '0%'})
+
+            $targetStory.addScene($sceneA, 'sceneA')
+                    .addTween(0.3, 0.5, {left: '10%'})
+                    .addTween(0.8, 1.0, {left: '20%'})
+
+            $targetStory.addScene($sceneB, 'sceneB')
+                    .addTween(0.2, 0.4, {left: '40%'})
+
+            $targetStory.addScene($sceneC, 'sceneC')
+                    .addTween(0.2, 0.4, {left: '50%'})
+                    .addTween(0.6, 0.8, {left: '60%'})
+
+            $targetStory.addScene($sceneD, 'sceneD')
+                    .addTween(0.0, 0.2, {left: '20%'})
+                    .addTween(0.6, 0.8, {left: '0%'})
+
+
+            $targetStory.initialize()
+
+            var resizeHandler = function () {
+                $targetStory.updateAfterResize()
+            }
+
+            var scrollHandler = function () {
+                $targetStory.updateAfterScroll()
+            }
+
+            window.addEventListener('scroll', scrollHandler)
+            window.addEventListener('resize', resizeHandler)
+
+            var pins = Array.from(new Array(10), function(_,i){
+                return {y: i * 0.1}
+            })
+            timelineScroll.debugger.injectPins($scenes, pins)
+            timelineScroll.debugger.debugCuePoints($targetStory)
+
+
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <section class="scene scene-a">
+        <div class="content">
+            <p>scene-a</p>
+        </div>
+    </section>
+    <section class="scene scene-b">
+        <div class="content">
+            <p>scene-b</p>
+        </div>
+    </section>
+    <section class="scene scene-c">
+        <div class="content">
+            <p>scene-c</p>
+        </div>
+    </section>
+    <section class="scene scene-d">
+        <div class="content">
+            <p>scene-d</p>
+        </div>
+    </section>
+    <div class="targetElement"></div>
+    <div class="grid">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</div>
+
+</body>
+</html>

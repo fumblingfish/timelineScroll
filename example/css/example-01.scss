@@ -1,0 +1,86 @@
+*{
+	box-sizing: border-box;
+}
+
+html, body{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding:0;
+	font-family: "consolas", serif;
+	background: #000;
+}
+
+h1, pre, p{ margin:0  }
+
+.container{
+	position:relative;
+	width:100%;
+	p{
+		color:#fff;
+		padding:20px;
+	}
+}
+
+.scene{
+	position:relative;
+	width:100%;
+	height:400px;
+}
+
+.scene-a{
+	margin-top:50%;
+	padding-bottom:50%;
+	height:auto;
+	background: #444;
+}
+
+.scene-b{
+	height:200px;
+	background: #666;
+}
+
+.scene-c{
+	background: #444;
+	height:200px;
+}
+
+.scene-d{
+	height: auto;
+	padding-bottom: 50%;
+	background: #666;
+	margin-bottom: 50%;
+}
+
+.targetElement{
+	position: fixed;
+	bottom:0;
+	top:50px;
+	left:0%;
+	width:10%;
+	height:100px;
+	background: #fff;
+	opacity: 0.5;
+}
+
+.grid{
+	position: fixed;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	opacity: 0.2;
+	.line{
+		position: absolute;
+		border-left:1px solid #fff;
+		top:0;
+		bottom:0;
+		@for $i from 1 through 9 {
+			&:nth-child(#{$i}){
+				left: 0% + $i * 10;
+			}
+		}
+	}
+}
+
+
