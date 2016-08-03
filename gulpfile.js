@@ -12,7 +12,6 @@ var bundles = [
    {
       src:[
          './src/timelineScroll.js',
-         './src/timelineScroll.debugger.js',
       ],
       output:'timelineScroll.js'
    },
